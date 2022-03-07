@@ -1,3 +1,16 @@
+/* font-family: 'Homemade Apple', cursive; */
 body{
     box-sizing: border-box;
+}
+#slider{
+    background: url(../images/frame.png) no-repeat ;
+    background-size: cover;
+    height: 100%;
+}
+.carousel-item img{
+    width: 100%;
+    height: 100%;
+}
+.fonts{
+    font-family: 'Dancing Script', cursive, helvetica;
 }

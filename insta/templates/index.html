@@ -1,0 +1,15 @@
+{%extends 'base.html'%}
+
+{% if title %}
+<title> {{title}}</title>
+{% else %}
+<title> UserAuth </title>
+{% endif %}
+
+
+{% block content %} 
+    {{block.super}}
+    <main class="d-flex justify-content-center align-item-center">
+        <h1>User Authentication</h1>
+    </main>
+{%endblock%}
