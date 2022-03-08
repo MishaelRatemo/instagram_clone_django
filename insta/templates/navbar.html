@@ -11,6 +11,9 @@
     <div class="navbar-header">
       <a class="navbar-brand fonts text-dark fw-bolder" href="{% url 'index' %}">Instagram</a>
     </div>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
     
     <div class="d-flex navbar-left">
         <form class="nav-form"  role="search" action="">
@@ -21,6 +24,12 @@
               </div>
             </div>
          </form>
+         <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
        
        <div class="col">
         {% if user.is_authenticated %}
@@ -28,7 +37,7 @@
           <li class="nav-item dropdown d-flex">
             <a class="nav-link dropdown-toggle " href="#" id="account" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <!-- <i class="fa-solid fa-user bg-dark"></i> -->
-                <i class="fa-solid fa-user-large"></i>
+                <span class="fa fa-solid fa-user fa-2x"></span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="account">
               <li><a class="dropdown-item" href="{%url 'index'%}">Home</a></li>
