@@ -1,0 +1,64 @@
+{%extends 'base.html'%}
+{%load static%}
+{% if title %}
+<title> {{title}}</title>
+{% else %}
+<title> UserAuth </title>
+{% endif %}
+
+
+{% block content %} 
+    {{block.super}}
+    <main class="d-flex bg-light container w-75 justify-content-center align-item-center">
+        <div class="p-2">
+        <h1> {{title}} </h1>
+        
+        {% for explore in explores %}
+        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#number{{explore.id}}">
+            <img src="{{ explore.image.url }}" class="img-fluid w-100 postimage" height="200" alt="">
+
+          </button>
+          
+          <!-- Modal -->
+          <div class="modal fade" id="number{{explore.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel"></h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex">
+                        <div class="col-7 h-100">
+                        <img src="{{ explore.image.url }}" class="img-fluid w-100 postimage" height="200" alt="">
+                        </div>
+                        <div class="col-5 h-100">
+                            <div class="card-body">
+                                <div class="d-flex py-3">
+                                  <i class="fa-solid fa-heart fa-2x mx-2 text-danger"></i>
+                                  <i class="fa-regular fa-comment fa-2x mx-2"></i>
+                                  <i class="fa-regular fa-paper-plane fa-2x mx-2"></i>
+                                </div>
+                                <h6>3 likes</h6>
+                                <p class="card-text"><span class="fw-bolder">Username </span>{{explore.description }} | {{ explore.date_posted |timesince}}</p>
+                                
+                              </div>
+                              <div class="d-flex align-item-center position-relative">
+                                  <i class="fa-regular fa-face-smile fa-1x position-absolute p-2"></i>
+                                  <input type="text" class="form-control pl-4" placeholder="       Add comment ...">
+                                  <span class="text-primary  fw-bold spanpost">Post</span>
+                              </div>
+                        </div>
+                    </div>
+                  
+                </div>
+                
+              </div>
+            </div>
+          </div>   
+        {% empty %}
+            <h2> No Posts yet</h2>
+        {% endfor %}
+        </div>
+    </main>
+{%endblock%}
