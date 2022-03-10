@@ -7,7 +7,11 @@ class PostForm(forms.ModelForm):
         model = Post
         exclude = ['author',
                   'date_posted',
-                  
+                  'liked',
                   ]
         
+class UserDetailsForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        exclude = ['user']
         

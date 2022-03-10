@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+{% block content %}
+
+<main class="d-flex bg-light container w-75 justify-content-center align-item-center">
+    <div class="row" >
+
+        <div class=" col-md-4">
+            {% if user.profile.profile_pic.url %}
+            <img src="{{user.profile.profile_pic.url}}" alt="" id="profilepic" class="img-fluid">
+            {% else %}
+            <form action="{% url 'profile' %}" method="post" enctype="multipart/form-data" style="margin-top:10%;">
+                {% csrf_token %}
+
+                {% bootstrap_form form layout='inline'%}
+                <input type="submit" class="btn btn-outline-primary" value="Update profile">
+            </form>
+            {% endif %}
+            <h3 style="margin-top:7%;letter-spacing:5px;font:bold;font-size: 50px;">@{{user.username}}</h3>
+        </div>
+    </div>
+    <div style="margin-top:1%;">
+        <p>{{user.profile.bio}}</p>
+    </div>
+
+
+    <div class="row" id="parent">
+        {% for post in posts %}
+            {% if user.profile.id == post.profile.id %}
+            <div>
+                <img src="{{post.pic.url}}" alt="" id="post" class="img-fluid">
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    </div>
+</main>
+{% endblock %}

@@ -24,16 +24,20 @@
                 <div class="card-body">
                   <img src="{{ post.image.url }}" class="img-fluid w-100 postimage" height="200" alt="">
                   <div class="d-flex py-3">
-                    <form action="{% url 'like' post.id %}" method="post">
+                    <form action="{% url 'likes'  %}" method="post">
                         {% csrf_token %}
+                        <input type="hidden" name="postid" value="{{ post.id}}">
+                        {%  if user not in post.liked.all %}                        
                         <button class="btn">
                             <i class="fa-solid fa-heart fa-2x mx-2 text-danger"></i>                        
                         </button>
+                        {%endif %}
+
                     </form>
                     <i class="fa-regular fa-comment fa-2x mx-2"></i>
                     <i class="fa-regular fa-paper-plane fa-2x mx-2"></i>
                   </div>
-                  <h6>3 likes</h6>
+                  <h6>{{post.liked.all.count}}likes</h6>
                   <p class="card-text"><span class="fw-bolder">{{post.author}} </span>{{post.description }} | {{ post.date_posted |timesince}}</p>
                   {% if comments  %}
                         {% for comment in comments%}

@@ -6,8 +6,8 @@ from django.contrib.auth import logout as auth_logout
 from django.contrib import  messages
 from django.contrib.auth.decorators import login_required
 
-from .forms import PostForm
-from insta.models import Post,Comment,Likes
+from .forms import PostForm, UserDetailsForm
+from insta.models import Post,Comment,Like
 from django.contrib.auth.models import User
 
 
@@ -16,7 +16,9 @@ from django.contrib.auth.models import User
 @login_required(login_url='/accounts/login/')
 def insta(request):
    posts=Post.objects.all()
+   user = request.user
    comments = ''
+   
    try:
          comments = Comment.objects.all()
    except:
@@ -24,7 +26,8 @@ def insta(request):
    context = {
       'title':'Instagram',
       'posts' : posts, 
-      'comments': comments
+      'comments': comments,
+      'user':user,
    }
    return render(request, 'index.html', context)
 
@@ -72,18 +75,54 @@ def comments(request,id):
       
             return redirect('/')
       
-def likes(request,id):
-           if request.method == 'POST':
-                  post = Post.objects.get(id=id)
-                  user = request.user
-                  try:
-                       get_like = Likes.objects.get(like_id_id=post, like_user_id=user) 
-                       get_like.delete()
-                  except:
-                        new_like = Likes(like_id=id, like_user=user)
-                        new_like.save()
+# def likes(request,id):
+#            if request.method == 'POST':
+#                   post = Post.objects.get(id=id)
+#                   user = request.user
+#                   try:
+#                        get_like = Likes.objects.get(like_id_id=post, like_user_id=user) 
+#                        get_like.delete()
+#                   except:
+#                         new_like = Likes(like_id=id, like_user=user)
+#                         new_like.save()
                   
-                  return redirect('/')
+#                   return redirect('/')
+            
+            
+def like_post(request):
+      user = request.user
+      if request.method == 'POST':
+            post_id = request.POST.get('post_id')
+            post_obj = Post.objects.get(id=post_id)
+            if user in post_obj.liked.all():
+                  post_obj.liked.remove(user)
+            else:
+                 post_obj.liked.remove(user)
+            like, created = Like.objects.get_or_create(user=user,post_id=post_id)
+            like.save()
+      return redirect('/')
+
+def profile(request):
+      posts=Post.objects.all()
+      current_user = request.user
+      
+      if request.method == 'POST':
+            form = UserDetailsForm(request.POST, request.FILES)
+            
+            if form.is_valid():
+                  profile = form.save(commit=False)
+                  profile.user = current_user
+                  profile.save()        
+            return redirect('profile')
+
+      else:
+            form = UserDetailsForm()
+      context ={
+            "form":form,
+            "posts":posts,
+      }            
+    
+      return render(request, 'profile.html',context)
 
       
 

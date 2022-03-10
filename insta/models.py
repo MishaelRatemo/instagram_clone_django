@@ -30,16 +30,16 @@ class Post(models.Model):
     title = models.CharField(max_length=160)
     description = models.TextField()
     date_posted = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, default=True)
-    
+    author = models.ForeignKey(User, on_delete=models.CASCADE, default=True, related_name='author')
+    liked = models.ManyToManyField(User, default=None, blank=True, related_name='liked')
 
     def __str__(self):
         return self.title
 
   
     @property
-    def number_of_comments(self):
-        return Comment.objects.filter(post=self).count()
+    def number_of_likes(self):
+        return self.liked.all().count()
     
 class Comment(models.Model):
     content = models.TextField()
@@ -47,9 +47,16 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     
-class Likes(models.Model):
-    like_id = models.ForeignKey(Post, on_delete = models.CASCADE)
-    like_user = models.ForeignKey(User, on_delete = models.CASCADE)
+# class Likes(models.Model):
+#     like_id = models.ForeignKey(Post, on_delete = models.CASCADE)
+#     like_user = models.ForeignKey(User, on_delete = models.CASCADE)
+    
+#     def __str__(self):
+#         return self.like_user
+
+class Like(models.Model):
+    post= models.ForeignKey(Post, on_delete = models.CASCADE)
+    user = models.ForeignKey(User, on_delete = models.CASCADE)
     
     def __str__(self):
-        return self.like_user
+        return self.post
