@@ -14,3 +14,21 @@ body{
 .fonts{
     font-family: 'Dancing Script', cursive, helvetica;
 }
+li{
+    list-style: none;
+    
+}
+li a{
+    color: black;
+}
+.spanpost{
+    position: absolute;
+    right: 10px;
+    top: 5px;
+}
+.postimage{
+    height: 40%;
+}
+#com_input{
+    padding-left: 35px;
+}
