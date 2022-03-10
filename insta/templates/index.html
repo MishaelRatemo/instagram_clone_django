@@ -1,5 +1,5 @@
 {%extends 'base.html'%}
-
+{%load static%}
 {% if title %}
 <title> {{title}}</title>
 {% else %}
@@ -9,7 +9,59 @@
 
 {% block content %} 
     {{block.super}}
-    <main class="d-flex justify-content-center align-item-center">
-        <h1>User Authentication</h1>
+    <main class="d-flex bg-light container w-75 justify-content-center align-item-center">
+        <div class="p-2">
+        <h1> Feeds </h1>
+        
+        {% for post in posts %}
+            <div class="card mb-2">
+                <h5 class="card-header">
+                    <img src="{% static 'images/favicon.png' %}" class="pill img-fluid" height="40" width="40" alt="profile-image">
+                    <img class="rounded-circle "  src="{{ post.author.profile.image.url }}" height="40" width="40" alt="profile-image">
+                        {{post.author}}
+                    <i class="fa-solid fa-ellipsis float-end"></i>
+                </h5>
+                <div class="card-body">
+                  <img src="{{ post.image.url }}" class="img-fluid w-100 postimage" height="200" alt="">
+                  <div class="d-flex py-3">
+                    <form action="{% url 'likes'  %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="postid" value="{{ post.id}}">
+                        {%  if user not in post.liked.all %}                        
+                        <button class="btn">
+                            <i class="fa-solid fa-heart fa-2x mx-2 text-danger"></i>                        
+                        </button>
+                        {%endif %}
+
+                    </form>
+                    <i class="fa-regular fa-comment fa-2x mx-2"></i>
+                    <i class="fa-regular fa-paper-plane fa-2x mx-2"></i>
+                  </div>
+                  <h6>{{post.liked.all.count}}likes</h6>
+                  <p class="card-text"><span class="fw-bolder">{{post.author}} </span>{{post.description }} | {{ post.date_posted |timesince}}</p>
+                  {% if comments  %}
+                        {% for comment in comments%}
+                                {% if post.id == comment.post_id %}
+                                <div>
+                                    <span class="fw-bolder">{{comment.author}}</span>
+                                    <span>{{comment.content}}</span>
+                                </div>
+
+                                {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+                </div>
+                <form method="post" action="{%  url 'comment' post.id%}" class="d-flex align-item-center position-relative">
+                    {% csrf_token %}
+                    <i class="fa-regular fa-face-smile fa-1x position-absolute p-2"></i>
+                    <input type="text" id="com_input" autocomplete="off" name="commentname" class="form-control pl-4" placeholder="       Add comment ...">
+                    <button  class="text-primary  fw-bold spanpost">Post</button>
+                </form>
+              </div>            
+        {% empty %}
+            <h2> No Posts yet</h2>
+        {% endfor %}
+        </div>
     </main>
 {%endblock%}

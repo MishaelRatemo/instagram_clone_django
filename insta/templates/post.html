@@ -1,0 +1,25 @@
+{%extends 'base.html'%}
+{% load bootstrap5 %}
+{% load static %}
+
+{% if title %}
+<title> {{title}}</title>
+{% else %}
+<title> Insta </title>
+{% endif %}
+
+
+{% block content %} 
+    {{block.super}}
+    <main class="d-flex justify-content-center align-item-center"> 
+        <div class="shadow mt-2  p-5 m-auto  rounded" style="background-color:rgb(255, 255, 255)">
+            <form  method="post" enctype="multipart/form-data"> 
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <div class="form-group">
+                    <input type="submit" class="btn px-3 btn-primary btn form-control" value="Post">
+                </div>
+            </form>
+        </div>
+    </main>
+{%endblock%}
